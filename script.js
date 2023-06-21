@@ -1,31 +1,42 @@
+// Variable Declarations
+
 const container = document.querySelector("#container");
 const resetBtn = document.querySelector("#resetBtn");
 const gridSizeBtn = document.querySelector("#gridSizeBtn");
 const errorText = document.querySelector(".errorText");
-
+const resetInkBtn = document.querySelector("#resetInkBtn")
 let gridSize = 16;
-
 let boxes = null;
+let darkStage = 0;
 
-gridSizeBtn.addEventListener("click", () => {
-    const newGridSize = prompt("Input a number between 0 and 100");
+// Helper Functions
 
-    if(newGridSize > 100 || newGridSize < 0 || isNaN(newGridSize)){
-        errorText.classList.remove("hidden")
-        errorText.textContent = "Please input a number between 0 and 100"
-        return;
-    }
+const mouseOverHandler = (item) => {
+    if(darkStage == 100) return;
+  const R = Math.floor(Math.random() * 256);
+  const G = Math.floor(Math.random() * 256);
+  const B = Math.floor(Math.random() * 256);
+  item.style.backgroundColor = `rgb(${R},${G},${B})`;
+  item.style.opacity = `${100 - darkStage}%`;
+  item.style.borderColor = "white";
+  darkStage += 10;
+  if (darkStage > 100) {
+    darkStage = 100;
+  }
+};
 
-    gridSize = newGridSize
+const resetGrid = () => {
+  for (i = 0; i < boxes.length; ++i) {
+    boxes[i].style.backgroundColor = "black";
+  }
+};
 
-    errorText.classList.add("hidden")
-
-    for (i = 0; i < boxes.length; ++i) {
-        boxes[i].remove();
-    }
-    createGrid();
-})
-
+const isWrongInput = (input) => {
+  if (input > 100 || input < 0 || isNaN(input) || input === "") {
+    return true;
+  }
+  return false;
+};
 
 const createGrid = () => {
   for (var x = 0; x < gridSize; x++) {
@@ -35,30 +46,40 @@ const createGrid = () => {
     for (var y = 0; y < gridSize; y++) {
       const box = document.createElement("div");
       box.classList.add("box");
-      box.addEventListener("mouseover", () => box.classList.add("white"));
-
-      if (x == 0) {
-        box.classList.add("topRow");
-      }
-      if (x == gridSize - 1) {
-        box.classList.add("bottomRow");
-      }
-      if (y == 0) {
-        box.classList.add("leftColumn");
-      }
-      if (y == gridSize - 1) {
-        box.classList.add("rightColumn");
-      }
+      box.addEventListener("mouseover", () => {
+        mouseOverHandler(box);
+      });
       row.appendChild(box);
     }
   }
   boxes = Array.from(document.querySelectorAll(".box"));
-};
+};  
 
-resetBtn.addEventListener("click", () => {
-  for (i = 0; i < boxes.length; ++i) {
-    boxes[i].classList.remove("white");
+gridSizeBtn.addEventListener("click", () => {
+  const newGridSize = prompt("Input a number between 0 and 100");
+
+  if (isWrongInput(newGridSize)) {
+    errorText.classList.remove("hidden");
+    errorText.textContent = "Please input a number between 0 and 100";
+    return;
   }
+
+  errorText.classList.add("hidden");
+  gridSize = newGridSize;
+  for (i = 0; i < boxes.length; ++i) {
+    boxes[i].remove();
+  }
+  createGrid();
 });
 
+resetInkBtn.addEventListener("click", () => darkStage = 0)
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "r" || event.key === "R") {
+      darkStage = 0;
+    }
+  });
+
 createGrid();
+
+resetBtn.addEventListener("click", () => resetGrid());
