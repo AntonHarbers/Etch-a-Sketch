@@ -4,7 +4,7 @@ const container = document.querySelector("#container");
 const resetBtn = document.querySelector("#resetBtn");
 const gridSizeBtn = document.querySelector("#gridSizeBtn");
 const errorText = document.querySelector(".errorText");
-const resetInkBtn = document.querySelector("#resetInkBtn")
+const resetInkBtn = document.querySelector("#resetInkBtn");
 let gridSize = 16;
 let boxes = null;
 let darkStage = 0;
@@ -12,14 +12,14 @@ let darkStage = 0;
 // Helper Functions
 
 const mouseOverHandler = (item) => {
-    if(darkStage == 100) return;
+  if (darkStage == 100) return;
   const R = Math.floor(Math.random() * 256);
   const G = Math.floor(Math.random() * 256);
   const B = Math.floor(Math.random() * 256);
   item.style.backgroundColor = `rgb(${R},${G},${B})`;
   item.style.opacity = `${100 - darkStage}%`;
   item.style.borderColor = "white";
-  darkStage += 10;
+  darkStage += 5;
   if (darkStage > 100) {
     darkStage = 100;
   }
@@ -53,9 +53,9 @@ const createGrid = () => {
     }
   }
   boxes = Array.from(document.querySelectorAll(".box"));
-};  
+};
 
-gridSizeBtn.addEventListener("click", () => {
+const setNewGridSize = () => {
   const newGridSize = prompt("Input a number between 0 and 100");
 
   if (isWrongInput(newGridSize)) {
@@ -70,15 +70,25 @@ gridSizeBtn.addEventListener("click", () => {
     boxes[i].remove();
   }
   createGrid();
+};
+
+gridSizeBtn.addEventListener("click", () => {
+  setNewGridSize();
 });
 
-resetInkBtn.addEventListener("click", () => darkStage = 0)
+resetInkBtn.addEventListener("click", () => (darkStage = 0));
 
-document.addEventListener("keydown", function(event) {
-    if (event.key === "r" || event.key === "R") {
-      darkStage = 0;
-    }
-  });
+document.addEventListener("keydown", function (event) {
+  if (event.key === "r" || event.key === "R") {
+    darkStage = 0;
+  }
+  if (event.key === "g" || event.key === "G") {
+    resetGrid();
+  }
+  if (event.key === "s" || event.key === "S") {
+    setNewGridSize();
+  }
+});
 
 createGrid();
 
