@@ -32,7 +32,7 @@ const resetGrid = () => {
 };
 
 const isWrongInput = (input) => {
-  if (input > 100 || input < 0 || isNaN(input) || input === "") {
+  if (input > 100 || input < 0 || isNaN(input) || input === "" || input == null) {
     return true;
   }
   return false;
