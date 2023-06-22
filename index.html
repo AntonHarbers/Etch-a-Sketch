@@ -8,16 +8,21 @@
   </head>
   <body>
     <h1>EJS-a-SkeJS</h1>
-    <h2 class="errorText hidden">Error</h2>
+    <div id="container"></div>
+    <div class="slidecontainer">
+      <p>Grid Size: <span id="gridSizeText">16</span></p>
+      <input type="range" min="1" max="100" value="16" class="slider" id="gridSizeSlider">
+    </div>
     <div class="btnRow">
-      <button id="gridSizeBtn">Grid Size</button>
+      <input id="colorSelect" type="color" value="#ffffff">
       <button id="resetBtn">Reset Grid</button>
       <button id="resetInkBtn">Reset Ink</button>
     </div>
-    <div id="container"></div>
-    <p>Press "R" to reset Ink</p>
-    <p>Press "G" to reset Grid</p>
-    <p>Press "S" to set new Grid Size</p>
+    <div class="checkboxDiv">
+      <p>Rainbow Mode <input id="rainbowMode" type="checkbox"></p>
+      <p>Unlimted Ink Mode <input id="inkMode" type="checkbox"></p>
+      <p>Hover Mode <input id="hoverMode" type="checkbox"/></p>
+    </div>
   </body>
   <script src="script.js"></script>
 </html>
