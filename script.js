@@ -2,24 +2,61 @@
 
 const container = document.querySelector("#container");
 const resetBtn = document.querySelector("#resetBtn");
-const gridSizeBtn = document.querySelector("#gridSizeBtn");
 const errorText = document.querySelector(".errorText");
 const resetInkBtn = document.querySelector("#resetInkBtn");
+const gridSizeSlider = document.querySelector("#gridSizeSlider");
+const gridSizeText = document.querySelector("#gridSizeText");
+const rainbowModeCheckbox = document.querySelector("#rainbowMode");
+const inkModeCheckbox = document.querySelector("#inkMode");
+const hoverModeCheckbox = document.querySelector("#hoverMode");
+const colorSelectInput = document.querySelector('#colorSelect');
+
+let colorSelect = colorSelectInput.value;
 let gridSize = 16;
 let boxes = null;
 let darkStage = 0;
+let rainbowMode = false;
+let inkMode = false;
+let hoverMode = false;
+
+colorSelectInput.addEventListener('change', () => {
+  colorSelect = colorSelectInput.value;
+});
+
+rainbowModeCheckbox.addEventListener("change", () => {
+  rainbowMode = rainbowModeCheckbox.checked;
+});
+
+inkModeCheckbox.addEventListener("change", () => {
+  inkMode = inkModeCheckbox.checked;
+  if(inkMode){
+    darkStage = 0;
+  }
+});
+
+hoverModeCheckbox.addEventListener("change", () => {
+  hoverMode = hoverModeCheckbox.checked;
+  setNewGridSize(gridSize)
+});
 
 // Helper Functions
 
 const mouseOverHandler = (item) => {
   if (darkStage == 100) return;
+
+  if (rainbowMode) {
   const R = Math.floor(Math.random() * 256);
   const G = Math.floor(Math.random() * 256);
   const B = Math.floor(Math.random() * 256);
   item.style.backgroundColor = `rgb(${R},${G},${B})`;
+  }else{
+    item.style.backgroundColor = colorSelect;
+  }
+
+  if (inkMode) return;
   item.style.opacity = `${100 - darkStage}%`;
   item.style.borderColor = "white";
-  darkStage += 5;
+  darkStage += 1/gridSize * 100;
   if (darkStage > 100) {
     darkStage = 100;
   }
@@ -31,13 +68,6 @@ const resetGrid = () => {
   }
 };
 
-const isWrongInput = (input) => {
-  if (input > 100 || input < 0 || isNaN(input) || input === "" || input == null) {
-    return true;
-  }
-  return false;
-};
-
 const createGrid = () => {
   for (var x = 0; x < gridSize; x++) {
     const row = document.createElement("div");
@@ -46,7 +76,9 @@ const createGrid = () => {
     for (var y = 0; y < gridSize; y++) {
       const box = document.createElement("div");
       box.classList.add("box");
-      box.addEventListener("mouseover", () => {
+      box.style.width = `${(1/gridSize)*35}rem`;
+      box.style.height = `${(1/gridSize)*35}rem`;
+      box.addEventListener(hoverMode ? "mouseover" : "click", () => {
         mouseOverHandler(box);
       });
       row.appendChild(box);
@@ -55,16 +87,7 @@ const createGrid = () => {
   boxes = Array.from(document.querySelectorAll(".box"));
 };
 
-const setNewGridSize = () => {
-  const newGridSize = prompt("Input a number between 0 and 100");
-
-  if (isWrongInput(newGridSize)) {
-    errorText.classList.remove("hidden");
-    errorText.textContent = "Please input a number between 0 and 100";
-    return;
-  }
-
-  errorText.classList.add("hidden");
+const setNewGridSize = (newGridSize) => {
   gridSize = newGridSize;
   for (i = 0; i < boxes.length; ++i) {
     boxes[i].remove();
@@ -72,11 +95,16 @@ const setNewGridSize = () => {
   createGrid();
 };
 
-gridSizeBtn.addEventListener("click", () => {
-  setNewGridSize();
+resetInkBtn.addEventListener("click", () => (darkStage = 0));
+gridSizeSlider.addEventListener("mouseup", (i) => {
+  setNewGridSize(i.target.value);
 });
 
-resetInkBtn.addEventListener("click", () => (darkStage = 0));
+gridSizeSlider.addEventListener("input", (i) => {
+  gridSizeText.textContent = `${i.target.value} x ${i.target.value}`;
+});
+
+// Hotkeys
 
 document.addEventListener("keydown", function (event) {
   if (event.key === "r" || event.key === "R") {
@@ -84,9 +112,6 @@ document.addEventListener("keydown", function (event) {
   }
   if (event.key === "g" || event.key === "G") {
     resetGrid();
-  }
-  if (event.key === "s" || event.key === "S") {
-    setNewGridSize();
   }
 });
 
