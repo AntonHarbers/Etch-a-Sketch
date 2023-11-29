@@ -5,24 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EJS a SkeJS</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>EJS-a-SkeJS</h1>
+    <!-- Settings -->
+    <div class="settings hidden">
+      <h1>Settings</h1>
+      <div class="slidecontainer">
+        <h3>Grid Size: <span id="gridSizeText">16 x 16</span></h3>
+        <input
+          type="range"
+          min="2"
+          max="50"
+          value="16"
+          class="slider"
+          id="gridSizeSlider"
+        />
+      </div>
+      <h3>Modes:</h3>
+      <div class="checkboxDiv">
+        <p>Rainbow Mode <input id="rainbowMode" type="checkbox" /></p>
+        <p>Unlimted Ink Mode <input id="inkMode" type="checkbox" /></p>
+        <p>Hover Mode <input id="hoverMode" type="checkbox" /></p>
+        <p>Hold Click Mode <input id="holdMode" type="checkbox" /></p>
+      </div>
+      <h3>Hotkeys:</h3>
+      <ul>
+        <li>"g" : Resets the grid</li>
+        <li>"r" : Refills the ink</li>
+        <li>"esc" : Toggles Settings Menu</li>
+      </ul>
+    </div>
+    <!-- Content -->
+    <h1 id="headerText">EJS-a-SkeJS</h1>
     <div id="container"></div>
-    <div class="slidecontainer">
-      <p>Grid Size: <span id="gridSizeText">16</span></p>
-      <input type="range" min="1" max="100" value="16" class="slider" id="gridSizeSlider">
-    </div>
+    <!-- Clear Slider -->
+    <input
+      type="range"
+      min="0"
+      max="16"
+      value="0"
+      class="slider"
+      id="clearSlider"
+    />
     <div class="btnRow">
-      <input id="colorSelect" type="color" value="#ffffff">
-      <button id="resetBtn">Reset Grid</button>
-      <button id="resetInkBtn">Reset Ink</button>
+      <div class="btnRowTop">
+        <input id="colorSelect" type="color" value="#ffffff" />
+        <button id="resetInkBtn">Reset Ink</button>
+      </div>
+      <div id="inkAmountContainer">
+        <div id="inkAmount"></div>
+        <div id="pen"></div>
+      </div>
     </div>
-    <div class="checkboxDiv">
-      <p>Rainbow Mode <input id="rainbowMode" type="checkbox"></p>
-      <p>Unlimted Ink Mode <input id="inkMode" type="checkbox"></p>
-      <p>Hover Mode <input id="hoverMode" type="checkbox"/></p>
-    </div>
+    <h4>Press "esc" for more settings!</h4>
   </body>
   <script src="script.js"></script>
 </html>
