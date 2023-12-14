@@ -2,7 +2,7 @@
 
 An Ecth a Sketch game built for the odin project using html, css and javascript.
 
-[Live Link](https://antonharbers.github.io/Odin-Etch-a-Sketch/)
+[Live Link](https://antonharbers.github.io/Etch-a-Sketch/)
 
 ![Screenshot of the Etch a Sketch App](/images/repoImage.png)
 
